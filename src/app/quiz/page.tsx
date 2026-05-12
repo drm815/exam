@@ -10,7 +10,7 @@ import QuizCard from '@/components/QuizCard'
 import AnswerFeedback from '@/components/AnswerFeedback'
 import ResultSummary from '@/components/ResultSummary'
 
-const QUIZ_COUNT = 20
+const QUIZ_COUNT = 10
 
 async function fetchGeneratedQuestion(sourceId: string): Promise<Question> {
   const res = await fetch('/api/generate-question', {
@@ -50,19 +50,30 @@ export default function QuizPage() {
     setLoadingCount(0)
     try {
       const pool = sources ?? pickRandomSources(QUIZ_COUNT)
-      const generated: Question[] = []
-      for (const src of pool.slice(0, QUIZ_COUNT)) {
-        generated.push(await fetchGeneratedQuestion(src.id))
-        setLoadingCount(generated.length)
-      }
-      dispatch({ type: 'START', questions: generated, mode })
+      const targets = pool.slice(0, QUIZ_COUNT)
+
+      // 첫 문제 생성 후 즉시 시작
+      const first = await fetchGeneratedQuestion(targets[0].id)
+      dispatch({ type: 'START', questions: [first], mode })
       setStarted(true)
       setSelectedId(null)
       setAnswered(false)
+      setLoading(false)
+      setLoadingCount(1)
+
+      // 나머지 문제 백그라운드에서 순차 생성
+      for (const src of targets.slice(1)) {
+        try {
+          const q = await fetchGeneratedQuestion(src.id)
+          dispatch({ type: 'APPEND', question: q })
+          setLoadingCount(prev => prev + 1)
+        } catch {
+          // 개별 문제 실패 시 건너뜀
+        }
+      }
     } catch (err) {
       console.error('[QuizPage] 문제 생성 오류:', err)
       alert('문제 생성에 실패했습니다. 잠시 후 다시 시도해주세요.')
-    } finally {
       setLoading(false)
     }
   }, [])
@@ -105,21 +116,19 @@ export default function QuizPage() {
 
         {loading && (
           <div className="bg-white rounded-2xl shadow-md p-6">
-            <p className="text-center text-gray-500 text-sm mb-4">
-              문제 생성 중... {loadingCount} / {QUIZ_COUNT}
-            </p>
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-              <div
-                className="bg-red-400 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(loadingCount / QUIZ_COUNT) * 100}%` }}
-              />
-            </div>
+            <p className="text-center text-gray-500 text-sm mb-4">첫 문제 생성 중...</p>
             <div className="animate-pulse space-y-3">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className="h-12 bg-gray-100 rounded-xl" />
               ))}
             </div>
           </div>
+        )}
+
+        {!loading && started && loadingCount < QUIZ_COUNT && (
+          <p className="text-center text-xs text-gray-400 mb-2">
+            문제 준비 중 {loadingCount} / {QUIZ_COUNT}
+          </p>
         )}
 
         {!loading && !started && session.status !== 'completed' && (

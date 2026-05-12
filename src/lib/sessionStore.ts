@@ -2,6 +2,7 @@ import type { Question, QuizSession, QuizResult } from '@/types/quiz'
 
 type Action =
   | { type: 'START'; questions: Question[]; mode: 'full' | 'retry-wrong' }
+  | { type: 'APPEND'; question: Question }
   | { type: 'ANSWER'; questionId: string; choiceId: 1 | 2 | 3 | 4 }
   | { type: 'NEXT' }
   | { type: 'RESET' }
@@ -15,6 +16,11 @@ export function sessionReducer(state: QuizSession, action: Action): QuizSession 
         answers: {},
         mode: action.mode,
         status: 'in-progress',
+      }
+    case 'APPEND':
+      return {
+        ...state,
+        questions: [...state.questions, action.question],
       }
     case 'ANSWER':
       return {
