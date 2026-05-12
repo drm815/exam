@@ -7,6 +7,7 @@ interface Props {
   onRestartFull: () => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ResultSummary({ result, mode, onRetryWrong, onRestartFull }: Props) {
   const pct = Math.round((result.correct / result.total) * 100)
   const grade = pct >= 80 ? '합격권' : pct >= 60 ? '보통' : '추가 학습 필요'
