@@ -55,7 +55,8 @@ export default function QuizPage() {
       setStarted(true)
       setSelectedId(null)
       setAnswered(false)
-    } catch {
+    } catch (err) {
+      console.error('[QuizPage] 문제 생성 오류:', err)
       alert('문제 생성에 실패했습니다. 잠시 후 다시 시도해주세요.')
     } finally {
       setLoading(false)
@@ -85,8 +86,7 @@ export default function QuizPage() {
   }
 
   const handleRestartFull = () => {
-    setStarted(false)
-    dispatch({ type: 'RESET' })
+    loadAndStart('full')
   }
 
   return (
