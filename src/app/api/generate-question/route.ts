@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+
+export const maxDuration = 60
 import { generateSimilarQuestion } from '@/lib/generateQuestion'
 import { SOURCE_QUESTIONS } from '@/lib/questions'
 
