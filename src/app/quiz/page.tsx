@@ -1,6 +1,6 @@
 'use client'
 
-import { useReducer, useState, useCallback } from 'react'
+import { useReducer, useState } from 'react'
 import { sessionReducer, initialSession, computeResult } from '@/lib/sessionStore'
 import { SOURCE_QUESTIONS } from '@/lib/questions'
 import type { Question } from '@/types/quiz'
@@ -12,32 +12,13 @@ import ResultSummary from '@/components/ResultSummary'
 
 const QUIZ_COUNT = 10
 
-async function fetchGeneratedQuestion(sourceId: string): Promise<Question> {
-  const res = await fetch('/api/generate-question', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sourceId }),
-  })
-  if (!res.ok) throw new Error('생성 실패')
-  const data = await res.json()
-  return data.question
-}
-
-function pickRandomSources(count: number): Question[] {
-  const pool = [...SOURCE_QUESTIONS]
-  const picked: Question[] = []
-  while (picked.length < count) {
-    const idx = Math.floor(Math.random() * pool.length)
-    picked.push(pool.splice(idx % pool.length, 1)[0])
-    if (pool.length === 0) pool.push(...SOURCE_QUESTIONS)
-  }
-  return picked
+function pickRandom(count: number, pool: Question[]): Question[] {
+  const shuffled = [...pool].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, Math.min(count, shuffled.length))
 }
 
 export default function QuizPage() {
   const [session, dispatch] = useReducer(sessionReducer, initialSession)
-  const [loading, setLoading] = useState(false)
-  const [loadingCount, setLoadingCount] = useState(0)
   const [started, setStarted] = useState(false)
   const [selectedId, setSelectedId] = useState<1 | 2 | 3 | 4 | null>(null)
   const [answered, setAnswered] = useState(false)
@@ -45,38 +26,16 @@ export default function QuizPage() {
   const currentQuestion = session.questions[session.currentIndex]
   const result = session.status === 'completed' ? computeResult(session) : null
 
-  const loadAndStart = useCallback(async (mode: 'full' | 'retry-wrong', sources?: Question[]) => {
-    setLoading(true)
-    setLoadingCount(0)
-    try {
-      const pool = sources ?? pickRandomSources(QUIZ_COUNT)
-      const targets = pool.slice(0, QUIZ_COUNT)
+  const startQuiz = (mode: 'full' | 'retry-wrong', questions: Question[]) => {
+    dispatch({ type: 'START', questions, mode })
+    setStarted(true)
+    setSelectedId(null)
+    setAnswered(false)
+  }
 
-      // 첫 문제 생성 후 즉시 시작
-      const first = await fetchGeneratedQuestion(targets[0].id)
-      dispatch({ type: 'START', questions: [first], mode })
-      setStarted(true)
-      setSelectedId(null)
-      setAnswered(false)
-      setLoading(false)
-      setLoadingCount(1)
-
-      // 나머지 문제 백그라운드에서 순차 생성
-      for (const src of targets.slice(1)) {
-        try {
-          const q = await fetchGeneratedQuestion(src.id)
-          dispatch({ type: 'APPEND', question: q })
-          setLoadingCount(prev => prev + 1)
-        } catch {
-          // 개별 문제 실패 시 건너뜀
-        }
-      }
-    } catch (err) {
-      console.error('[QuizPage] 문제 생성 오류:', err)
-      alert('문제 생성에 실패했습니다. 잠시 후 다시 시도해주세요.')
-      setLoading(false)
-    }
-  }, [])
+  const handleStart = () => {
+    startQuiz('full', pickRandom(QUIZ_COUNT, SOURCE_QUESTIONS))
+  }
 
   const handleSelect = (id: 1 | 2 | 3 | 4) => {
     if (answered) return
@@ -93,49 +52,28 @@ export default function QuizPage() {
 
   const handleRetryWrong = () => {
     if (!result) return
-    const sources = result.wrong.map(q => {
-      const src = q.sourceRef ? SOURCE_QUESTIONS.find(s => s.id === q.sourceRef) : undefined
-      return src ?? SOURCE_QUESTIONS[Math.floor(Math.random() * SOURCE_QUESTIONS.length)]
-    })
-    loadAndStart('retry-wrong', sources)
+    startQuiz('retry-wrong', result.wrong)
   }
 
   const handleRestartFull = () => {
-    loadAndStart('full')
+    startQuiz('full', pickRandom(QUIZ_COUNT, SOURCE_QUESTIONS))
   }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-red-50 to-gray-50 py-8 px-4">
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-6">
-          <h1 className="text-xl font-bold text-red-600">소방관계법규 유사문제</h1>
+          <h1 className="text-xl font-bold text-red-600">소방관계법규 기출문제</h1>
           {session.mode === 'retry-wrong' && (
             <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">오답 재시험 모드</span>
           )}
         </div>
 
-        {loading && (
-          <div className="bg-white rounded-2xl shadow-md p-6">
-            <p className="text-center text-gray-500 text-sm mb-4">첫 문제 생성 중...</p>
-            <div className="animate-pulse space-y-3">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="h-12 bg-gray-100 rounded-xl" />
-              ))}
-            </div>
-          </div>
+        {!started && session.status !== 'completed' && (
+          <StartScreen onStart={handleStart} loading={false} />
         )}
 
-        {!loading && started && loadingCount < QUIZ_COUNT && (
-          <p className="text-center text-xs text-gray-400 mb-2">
-            문제 준비 중 {loadingCount} / {QUIZ_COUNT}
-          </p>
-        )}
-
-        {!loading && !started && session.status !== 'completed' && (
-          <StartScreen onStart={() => loadAndStart('full')} loading={loading} />
-        )}
-
-        {!loading && started && session.status === 'in-progress' && currentQuestion && (
+        {started && session.status === 'in-progress' && currentQuestion && (
           <>
             <ProgressBar current={session.currentIndex + 1} total={session.questions.length} />
             <QuizCard
@@ -155,7 +93,7 @@ export default function QuizPage() {
           </>
         )}
 
-        {!loading && session.status === 'completed' && result && (
+        {session.status === 'completed' && result && (
           <ResultSummary
             result={result}
             mode={session.mode}
