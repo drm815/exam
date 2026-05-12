@@ -37,6 +37,7 @@ function pickRandomSources(count: number): Question[] {
 export default function QuizPage() {
   const [session, dispatch] = useReducer(sessionReducer, initialSession)
   const [loading, setLoading] = useState(false)
+  const [loadingCount, setLoadingCount] = useState(0)
   const [started, setStarted] = useState(false)
   const [selectedId, setSelectedId] = useState<1 | 2 | 3 | 4 | null>(null)
   const [answered, setAnswered] = useState(false)
@@ -46,11 +47,14 @@ export default function QuizPage() {
 
   const loadAndStart = useCallback(async (mode: 'full' | 'retry-wrong', sources?: Question[]) => {
     setLoading(true)
+    setLoadingCount(0)
     try {
       const pool = sources ?? pickRandomSources(QUIZ_COUNT)
-      const generated = await Promise.all(
-        pool.slice(0, QUIZ_COUNT).map(src => fetchGeneratedQuestion(src.id))
-      )
+      const generated: Question[] = []
+      for (const src of pool.slice(0, QUIZ_COUNT)) {
+        generated.push(await fetchGeneratedQuestion(src.id))
+        setLoadingCount(generated.length)
+      }
       dispatch({ type: 'START', questions: generated, mode })
       setStarted(true)
       setSelectedId(null)
@@ -100,12 +104,21 @@ export default function QuizPage() {
         </div>
 
         {loading && (
-          <div className="bg-white rounded-2xl shadow-md p-6 animate-pulse">
-            <div className="h-4 bg-gray-200 rounded mb-4 w-1/3" />
-            <div className="h-6 bg-gray-200 rounded mb-6 w-full" />
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="h-12 bg-gray-100 rounded-xl mb-3" />
-            ))}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <p className="text-center text-gray-500 text-sm mb-4">
+              문제 생성 중... {loadingCount} / {QUIZ_COUNT}
+            </p>
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+              <div
+                className="bg-red-400 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(loadingCount / QUIZ_COUNT) * 100}%` }}
+              />
+            </div>
+            <div className="animate-pulse space-y-3">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="h-12 bg-gray-100 rounded-xl" />
+              ))}
+            </div>
           </div>
         )}
 
