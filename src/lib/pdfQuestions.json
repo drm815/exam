@@ -722,7 +722,8 @@
     "correctId": 1,
     "explanation": "전달함수는 모든 초기값을 0으로 하였을 때 출력신호의 라플라스 변환과 입력신호의 라플라스변환의 비이다. 블록선도에서 C = R(s)G₁(s)G₂(s) - CG₁(s)G₂(s)G₄(s) - CG₂(s)G₃(s)를 정리하면 G(s) = G₁(s)G₂(s) / [1 + G₂(s)G₃(s) + G₁(s)G₂(s)G₄(s)]",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2403_q028.jpg"
   },
   {
     "id": "q_2403_029",
@@ -1621,7 +1622,8 @@
     "correctId": 2,
     "explanation": "피상전력 Pa = VI = 180×5 = 900VA이고, 무효전력 Pr = √(Pa² - P²) = √(900² - 720²) = 540Var",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2405_q028.jpg"
   },
   {
     "id": "q_2405_029",
@@ -1853,7 +1855,8 @@
     "correctId": 3,
     "explanation": "단상 반파정류회로의 직류 평균전압은 Vav = 0.45V = 0.45 × 220 = 99V이다. 전류의 평균값 Iav = Vav/R = 99/(16√2) ≒ 4.4A이다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2405_q036.jpg"
   },
   {
     "id": "q_2405_037",
@@ -3738,7 +3741,8 @@
     "correctId": 1,
     "explanation": "전압(V)과 정전용량(C)은 반비례하므로 용량이 제일 작은 1C[μF]이 제일 먼저 파괴된다. 직렬연결 시 용량이 작을수록 걸리는 전압이 높아진다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q021.jpg"
   },
   {
     "id": "q_2407_022",
@@ -3796,7 +3800,8 @@
     "correctId": 4,
     "explanation": "교류브리지 평형조건에서 Z₁Z₄ = Z₂Z₃를 적용하여 계산하면 R₁C₂ = R₂C₁, L = R₂R₃C₁이 도출된다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q023.jpg"
   },
   {
     "id": "q_2407_024",
@@ -3825,7 +3830,8 @@
     "correctId": 1,
     "explanation": "3전압계법을 적용하여 유효전력 P = (1/2R)(V₃² - V₁² - V₂²) = (1/10)(50² - 20² - 40²) = 50W",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q024.jpg"
   },
   {
     "id": "q_2407_025",
@@ -3912,7 +3918,8 @@
     "correctId": 3,
     "explanation": "치환법에 의해 AND 회로 → OR 회로, OR 회로 → AND 회로로 바꾼다. 버블(bubble)이 있는 것은 버블을 없애고, 버블이 없는 것은 버블을 붙인다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q027.jpg"
   },
   {
     "id": "q_2407_028",
@@ -3970,7 +3977,8 @@
     "correctId": 3,
     "explanation": "Q₁: 제어용, Q₂: 증폭용, R_L: 부하(load)",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q029.jpg"
   },
   {
     "id": "q_2407_030",
@@ -4260,7 +4268,8 @@
     "correctId": 2,
     "explanation": "블록선도에서 전달함수를 구하면 RG₁G₂ - CG₁G₂G₃G₄ = C, 정리하면 C/R = G₁G₂ / (1 + G₁G₂G₃G₄)",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2407_q040.jpg"
   },
   {
     "id": "q_2407_041",
@@ -6029,7 +6038,8 @@
     "correctId": 2,
     "explanation": "A₂와 0.02Ω이 병렬회로이므로 I₂ = I - I₁ = 25 - 5 = 20A이고, V = I₂R = 20 × 0.02 = 0.4V이다. A₂의 내부저항 R = V/I₁ = 0.4/5 = 0.08Ω이다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q021.jpg"
   },
   {
     "id": "q_2502_022",
@@ -6174,7 +6184,8 @@
     "correctId": 2,
     "explanation": "테브난의 정리에 의해 2.4Ω에는 전압이 가해지지 않으므로 Vth = (1.2/(1.2+1.2)) × 10 = 5V이고, 전압원을 단락하고 회로망에서 본 저항 Rth = (1.2×1.2)/(1.2+1.2) + 2.4 = 3Ω이다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q026.jpg"
   },
   {
     "id": "q_2502_027",
@@ -6261,7 +6272,8 @@
     "correctId": 2,
     "explanation": "OR 게이트이므로 입력신호 중 5V, 0V, 5V 중 어느 하나라도 5V이면 출력신호 X가 5가 된다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q029.jpg"
   },
   {
     "id": "q_2502_030",
@@ -6319,7 +6331,8 @@
     "correctId": 2,
     "explanation": "시퀀스회로에서 A, B 접점이 직렬로 연결된 회로는 AND 회로에 해당. 입력신호 A, B가 동시에 1일 때만 출력신호 X가 1이 된다. X=A·B",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q031.jpg"
   },
   {
     "id": "q_2502_032",
@@ -6406,7 +6419,8 @@
     "correctId": 2,
     "explanation": "블록선도에서 전달함수를 구할 때 RG₁G₂ - CG₁G₂G₃G₄ = C 관계를 이용하여 정리하면 C(s)/R(s) = G₁(s)G₂(s) / (1 + G₁(s)G₂(s)G₃(s)G₄(s))이 된다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q034.jpg"
   },
   {
     "id": "q_2502_035",
@@ -6551,7 +6565,8 @@
     "correctId": 4,
     "explanation": "Δ결선 선전류 IL = √3×VL/Z = √3×200/√(20²+10²) = 15.491A, 상전류 Ip = IL/√3 = 8.943A, 3상 유효전력 P = 3Ip²R = 3×8.943²×20 = 4798 ≒ 4800W = 4.8kW",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q039.jpg"
   },
   {
     "id": "q_2502_040",
@@ -6580,7 +6595,8 @@
     "correctId": 4,
     "explanation": "V1=3000V, V2=3300V, P=10kVA, cosθ=0.8일 때, 부하전류 I2 = P/(V2-V1) = 10000/(3300-3000) = 33.33A, 부하측 소비전력 PL = V2×I2×cosθ = 3300×33.33×0.8 ≒ 88kW",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2502_q040.jpg"
   },
   {
     "id": "q_2502_041",
@@ -8639,7 +8655,8 @@
     "correctId": 2,
     "explanation": "테브난의 정리에 의해 2.4Ω에는 전압이 가해지지 않으므로 Vth = R2/(R1+R2) × V = 1.2/(1.2+1.2) × 10 = 5V이고, 전압원을 단락하고 회로망에서 본 저항 Rth = (1.2×1.2)/(1.2+1.2) + 2.4 = 3Ω이다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2505_q031.jpg"
   },
   {
     "id": "q_2505_032",
@@ -8842,7 +8859,8 @@
     "correctId": 3,
     "explanation": "휘트스톤브리지 평형조건 PR = QX에서 10×125 = 100×X, 따라서 X = (10×125)/100 = 12.5Ω",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2505_q038.jpg"
   },
   {
     "id": "q_2505_039",
@@ -8871,7 +8889,8 @@
     "correctId": 1,
     "explanation": "블록선도에서 D(s)를 입력으로 C(s)를 출력으로 하는 전달함수를 구하면, DG₂ + CG₁G₂H = C에서 정리하면 C/D = G₂/(1-G₁G₂H)가 된다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2505_q039.jpg"
   },
   {
     "id": "q_2505_040",
@@ -8900,7 +8919,8 @@
     "correctId": 2,
     "explanation": "OR gate이므로 3개의 입력신호 중 어느 하나라도 1(5V)이면 출력신호가 1(5V)이 된다. +5V 입력이 있으므로 출력은 5V이다.",
     "subject": 2,
-    "subjectName": "소방전기일반"
+    "subjectName": "소방전기일반",
+    "imageUrl": "/images/2505_q040.jpg"
   },
   {
     "id": "q_2505_041",

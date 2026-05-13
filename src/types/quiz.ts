@@ -20,6 +20,7 @@ export interface Question {
   sourceRef?: string       // 과목명 | 회차 정보
   subject?: SubjectId      // 과목 번호
   subjectName?: string     // 과목명
+  imageUrl?: string        // 그림 문제 이미지 경로 (예: /images/2502_q021.jpg)
 }
 
 export interface QuizSession {

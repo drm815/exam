@@ -16,7 +16,18 @@ export default function QuizCard({ question, selectedId, onSelect, answered }: P
         <span className="text-xs text-gray-400">{question.source}</span>
         <span className="text-yellow-500 text-sm">{stars(question.difficulty)}</span>
       </div>
-      <p className="text-gray-800 font-medium leading-relaxed mb-6">{question.stem}</p>
+      <p className="text-gray-800 font-medium leading-relaxed mb-4">{question.stem}</p>
+      {question.imageUrl && (
+        <div className="mb-4 rounded-xl overflow-hidden border border-gray-200 bg-gray-50 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={question.imageUrl}
+            alt={`Q${question.source} 그림`}
+            className="max-w-full h-auto"
+            style={{ maxHeight: '240px' }}
+          />
+        </div>
+      )}
       <div className="space-y-3">
         {question.choices.map(choice => {
           const isSelected = selectedId === choice.id
