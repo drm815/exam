@@ -5,6 +5,8 @@ export interface Choice {
   text: string
 }
 
+export type SubjectId = 1 | 2 | 3 | 4  // 1:소방원론 2:소방전기일반 3:소방관계법규 4:소방전기시설
+
 export interface Question {
   id: string               // 예: "q001"
   source: string           // 예: "25.02 기출 #41"
@@ -15,7 +17,9 @@ export interface Question {
   explanation: string      // 해설 (법령 조항 포함)
   lawRef?: string          // 근거 법령
   hasTable?: boolean
-  sourceRef?: string       // 유사문제가 참조한 원본 기출 ID (Task 7에서 사용)
+  sourceRef?: string       // 과목명 | 회차 정보
+  subject?: SubjectId      // 과목 번호
+  subjectName?: string     // 과목명
 }
 
 export interface QuizSession {
