@@ -9,7 +9,7 @@ import QuizCard from '@/components/QuizCard'
 import AnswerFeedback from '@/components/AnswerFeedback'
 import ResultSummary from '@/components/ResultSummary'
 
-const QUIZ_COUNT = 20
+const QUIZ_COUNT_PER_SUBJECT = 20
 
 const SUBJECTS: { id: SubjectId; name: string; short: string }[] = [
   { id: 1, name: '소방원론', short: '원론' },
@@ -24,6 +24,17 @@ const ALL_SESSIONS = Array.from(new Set(PDF_QUESTIONS.map(q => q.source?.split('
 function pickRandom(count: number, pool: Question[]): Question[] {
   const shuffled = [...pool].sort(() => Math.random() - 0.5)
   return shuffled.slice(0, Math.min(count, shuffled.length))
+}
+
+/** 과목별 모드: 선택된 각 과목에서 20문제씩 뽑아 합산 */
+function pickBySubject(subjects: SubjectId[], pool: Question[]): Question[] {
+  const result: Question[] = []
+  for (const subj of subjects) {
+    const subjPool = pool.filter(q => q.subject === subj)
+    result.push(...pickRandom(QUIZ_COUNT_PER_SUBJECT, subjPool))
+  }
+  // 과목 순서대로 섞기
+  return result.sort(() => Math.random() - 0.5)
 }
 
 type FilterMode = 'subject' | 'session'
@@ -61,7 +72,10 @@ export default function QuizPage() {
 
   const handleStart = () => {
     const pool = getPool()
-    startQuiz('full', pickRandom(QUIZ_COUNT, pool))
+    const questions = filterMode === 'subject'
+      ? pickBySubject(selectedSubjects.length > 0 ? selectedSubjects : [1, 2, 3, 4], pool)
+      : pickRandom(QUIZ_COUNT_PER_SUBJECT * 4, pool)
+    startQuiz('full', questions)
   }
 
   const handleSelect = (id: 1 | 2 | 3 | 4) => {
@@ -204,7 +218,9 @@ export default function QuizPage() {
             )}
 
             <p className="text-xs text-center text-gray-400 mb-4">
-              선택된 문제 {poolCount}개 중 {Math.min(QUIZ_COUNT, poolCount)}문제 랜덤 출제
+              {filterMode === 'subject'
+                ? `과목별 각 ${QUIZ_COUNT_PER_SUBJECT}문제 × ${selectedSubjects.length || 4}과목 = 총 ${(selectedSubjects.length || 4) * QUIZ_COUNT_PER_SUBJECT}문제`
+                : `선택된 문제 ${poolCount}개 중 ${Math.min(QUIZ_COUNT_PER_SUBJECT * 4, poolCount)}문제 랜덤 출제`}
             </p>
 
             <button
