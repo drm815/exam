@@ -5,16 +5,24 @@ interface Props {
   selectedId: 1 | 2 | 3 | 4
   onNext: () => void
   isLast: boolean
+  isLastInBlock?: boolean       // 과목 블록의 마지막 문제
+  nextSubjectName?: string      // 다음 과목 이름
 }
 
-export default function AnswerFeedback({ question, selectedId, onNext, isLast }: Props) {
+export default function AnswerFeedback({ question, selectedId, onNext, isLast, isLastInBlock, nextSubjectName }: Props) {
   const correct = selectedId === question.correctId
   const correctChoice = question.choices.find(c => c.id === question.correctId)
+
+  const buttonLabel = () => {
+    if (isLastInBlock && nextSubjectName) return `${nextSubjectName} 결과 보기`
+    if (isLast) return '결과 보기'
+    return '다음 문제 →'
+  }
 
   return (
     <div className={`mt-4 rounded-xl p-4 border-2 ${correct ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50'}`}>
       <p className={`font-bold text-lg mb-2 ${correct ? 'text-green-700' : 'text-red-700'}`}>
-        {correct ? '✓ 정답입니다!' : `✗ 오답입니다`}
+        {correct ? '✓ 정답입니다!' : '✗ 오답입니다'}
       </p>
 
       {!correct && correctChoice && (
@@ -39,7 +47,7 @@ export default function AnswerFeedback({ question, selectedId, onNext, isLast }:
         onClick={onNext}
         className="mt-2 w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold transition-colors"
       >
-        {isLast ? '결과 보기' : '다음 문제 →'}
+        {buttonLabel()}
       </button>
     </div>
   )
